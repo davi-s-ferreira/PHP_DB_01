@@ -39,11 +39,11 @@ if ($page_title == "") {
 
         <a href="/"><?php if ($page_menu == 'index') echo "<strong>INÍCIO</strong>"; else echo "Início"; ?></a>
         &bull;
-        <a href="/articles.php"><?php if($page_menu == 'articles') echo "<strong>ARTIGOS</strong>"; else echo "Artigos"; ?></a>
+        <a href="/page/articles.php"><?php if($page_menu == 'articles') echo "<strong>ARTIGOS</strong>"; else echo "Artigos"; ?></a>
         &bull;
-        <a href="/contacts.php"><?php if($page_menu == 'contacts') echo "<strong>FAÇA CONTATO</strong>"; else echo "Faça Contato"; ?></a>
+        <a href="/page/contacts.php"><?php if($page_menu == 'contacts') echo "<strong>FAÇA CONTATO</strong>"; else echo "Faça Contato"; ?></a>
         &bull;
-        <a href="/about.php"><?php if($page_menu == 'about') echo "<strong>SOBRE</strong>"; else echo "Sobre"; ?></a>
+        <a href="/page/about.php"><?php if($page_menu == 'about') echo "<strong>SOBRE</strong>"; else echo "Sobre"; ?></a>
 
     </nav>
 
