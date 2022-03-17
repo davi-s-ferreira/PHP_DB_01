@@ -9,9 +9,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/_config.php";
 
 // Variáveis desta página
 $form = [
-    "name" => '',
-    "email" => '',
-    'birth' => '',
+    'user_name' => '',
+    'user_email' => '',
+    'user_birth' => '',
     'password' => '',
     'password2' => '',
     'feedback' => ''
@@ -25,14 +25,14 @@ if (isset($_POST['send'])) :
 
     // Obtém os valores dos campos, sanitiza e armazena nas variáveis.
     // Atenção! A função "sanitize()" está em "/_config.php".
-    $form['name'] = sanitize('name', 'string');
-    $form['email'] = sanitize('email', 'email');
-    $form['birth'] = sanitize('birth', 'string');
+    $form['user_name'] = sanitize('name', 'string');
+    $form['user_email'] = sanitize('email', 'email');
+    $form['user_birth'] = sanitize('birth', 'string');
     $form['password'] = sanitize('password', 'string');
     $form['password2'] = sanitize('password2', 'string');
 
     // Verifica se todos os campos form preenchidos
-    if ($form['name'] === '' or $form['email'] === '' or $form['birth'] === '' or $form['password'] === '' or $form['password2'] === '') :
+    if ($form['user_name'] === '' or $form['user_email'] === '' or $form['user_birth'] === '' or $form['password'] === '' or $form['password2'] === '') :
         $form['feedback'] = '<h3 style="color:red">Erro: por favor, preencha todos os campos!</h3>';
 
     // Verifica se as senhas digitadas coincidem
@@ -41,25 +41,13 @@ if (isset($_POST['send'])) :
         $form['password'] = $form['password2'] = '';
 
     // Verifica se a data é válida
-    elseif (!validateDate($form['birth'])) :
+    elseif (!validate_date($form['user_birth'])) :
         $form['feedback'] = '<h3 style="color:red">Erro: a data de nascimento está incorreta!</h3>';
-        $form['birth'] = '';
+        $form['user_birth'] = '';
     else :
 
-        /*
-        // Pesquisa pelo e-mail
-        $sql = "SELECT user_id FROM `users` WHERE user_email = 'contato@luferat.net';";
-        $res = $conn->query($sql);
-
-        // Se e-mail existe
-        if ($res->num_rows > 0) :
-            $form['feedback'] = '<h3 style="color:red">Erro: este e-mail já está em uso!</h3>';
-
-        else :
-            */
-
-            // Cria a query para salvar no banco de dados.
-            $sql = <<<SQL
+        // Cria a query para salvar no banco de dados.
+        $sql = <<<SQL
 
 INSERT INTO users (
     user_name,
@@ -68,22 +56,22 @@ INSERT INTO users (
     user_password
 ) VALUES 
 (
-    '{$form['name']}',
-    '{$form['email']}',
-    '{$form['birth']}',
+    '{$form['user_name']}',
+    '{$form['user_email']}',
+    '{$form['user_birth']}',
     SHA2('{$form['password']}', 512)
 );
 
 SQL;
 
-            // Salva contato no banco de dados.
-            $conn->query($sql);
+        // Salva contato no banco de dados.
+        $conn->query($sql);
 
-            // Obtém somente primeiro nome do rementente.
-            $first_name = explode(" ", $form['name'])[0];
+        // Obtém somente primeiro nome do rementente.
+        $first_name = explode(" ", $form['user_name'])[0];
 
-            // Cria mensagem de confirmação.
-            $form['feedback'] = <<<OUT
+        // Cria mensagem de confirmação.
+        $form['feedback'] = <<<OUT
         
     <h3>Olá {$first_name}!</h3>
     <p>Seu cadastro foi criado com sucesso.</p>
@@ -92,30 +80,28 @@ SQL;
     
 OUT;
 
-            // Oculto o formulário.
-            $show_form = false;
+        // Oculto o formulário.
+        $show_form = false;
 
-            // Data de envio.
-            $now = date('d/m/Y \à\s H:i');
+        // Data de envio.
+        $now = date('d/m/Y \à\s H:i');
 
-            // Enviar e-mail para o administrador.
-            $to = $site['admin'];
-            $sj = 'Novo cadastro em ' . $site['name'] . '.';
-            $msg = <<<MSG
+        // Enviar e-mail para o administrador.
+        $to = $site['admin'];
+        $sj = 'Novo cadastro em ' . $site['name'] . '.';
+        $msg = <<<MSG
 
 Um novo usuário se cadastrou em {$site['name']}:
 
     Data: {$now}
-    Nome: {$form['name']}
-    E-mail: {$form['email']}
-    Nascimento: {$form['birth']}
+    Nome: {$form['user_name']}
+    E-mail: {$form['user_email']}
+    Nascimento: {$form['user_birth']}
 
 Obrigado...
 
 MSG;
-            @mail($to, $sj, $msg);
-
-        // endif;
+        @mail($to, $sj, $msg);
 
     endif;
 
@@ -154,17 +140,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/_header.php";
 
             <p>
                 <label for="name">Nome:</label>
-                <input type="text" name="name" id="name" placeholder="Seu nome completo." value="<?php echo $form['name'] ?>" autofocus>
+                <input type="text" name="name" id="name" placeholder="Seu nome completo." value="<?php echo $form['user_name'] ?>" autofocus>
             </p>
 
             <p>
                 <label for="email">E-mail:</label>
-                <input type="email" name="email" id="email" placeholder="Seu e-mail principal." value="<?php echo $form['email'] ?>">
+                <input type="email" name="email" id="email" placeholder="Seu e-mail principal." value="<?php echo $form['user_email'] ?>">
             </p>
 
             <p>
                 <label for="birth">Nascimento:</label>
-                <input type="date" name="birth" id="birth" placeholder="Sua data de nascimento" value="<?php echo $form['birth'] ?>">
+                <input type="date" name="birth" id="birth" placeholder="Sua data de nascimento" value="<?php echo $form['user_birth'] ?>">
             </p>
 
             <p>

@@ -30,13 +30,6 @@ if (isset($_POST['send'])) :
         $feedback = '<h3 style="color:red">Erro: por favor, preencha todos os campos!</h3>';
     else :
 
-        /*
-    // Isso é somente para testes. Remova depois dos testes.
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre><hr><hr>';
-    */
-
         // Cria a query para slvar no banco de dados.
         $sql = <<<SQL
 
@@ -115,6 +108,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/_header.php";
 <?php // Conteúdo 
 ?>
 <article>
+
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 
     <h2>Faça contato</h2>
     <p>Preencha todos os campos do formulário abaixo para entrar em contato com a equipe do <strong><?php echo $site['name'] ?></strong>.</p>

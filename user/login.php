@@ -39,7 +39,7 @@ if (isset($_POST['send'])) :
 
     else :
 
-        // Cria a query para verificar usuário e senha no bnco de dados.
+        // Cria a query para verificar usuário e senha no banco de dados.
         $sql = <<<SQL
 
 SELECT user_id, user_date, user_name, user_email, user_birth 
